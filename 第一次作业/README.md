@@ -18,7 +18,7 @@
 ## 有关代码
 - 代码全是自己写的，没有用AI
 - 注释是AI写后我修改的
+- 多添加了一个删除某一学生信息的功能
 
 ## 有关环境
-- 使用了python的prettytable库
-- 因为使用了这一个库，所以采用了python的venv虚拟环境（即lab1venv文件夹），库被安装在虚拟环境中
+- 使用了python的prettytable库，直接使用pip安装即可

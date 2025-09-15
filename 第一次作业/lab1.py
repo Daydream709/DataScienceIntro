@@ -1,4 +1,4 @@
-from prettytable import PrettyTable
+from prettytable import PrettyTable  # 外部库
 
 
 class Student:
@@ -18,11 +18,11 @@ class Student:
         初始化学生对象。
 
         Args:
-            stunum (int, optional): 学号
-            name (str, optional): 姓名
-            sex (str, optional): 性别
-            dorm (str, optional): 宿舍
-            phonenum (int, optional): 电话号码
+            stunum (int): 学号
+            name (str): 姓名
+            sex (str): 性别
+            dorm (str): 宿舍
+            phonenum (int): 电话号码
         """
         self.stunum = stunum
         self.name = name
@@ -97,9 +97,14 @@ while True:
     print("5. 退出程序")
     print("请输入功能对应数字：")
     opnum = int(input())
-
     # 功能1：按学号查找学生信息
     if opnum == 1:
+        # 检查是否有学生信息
+        if len(managelist.list) == 0:
+            print("目前没有学生信息！")
+            print("\n\n------------------------------------------")
+            continue
+
         print("请输入学号：")
         # 输入验证，确保输入为整数
         while True:
@@ -173,8 +178,14 @@ while True:
         print(table)
         print("\n\n------------------------------------------")
 
-
+    # 功能4：删除某一学生信息
     if opnum == 4:
+        # 检查是否有学生信息
+        if len(managelist.list) == 0:
+            print("目前没有学生信息！")
+            print("\n\n------------------------------------------")
+            continue
+
         print("请输入学号：")
         # 输入验证，确保输入为整数
         while True:
@@ -188,15 +199,11 @@ while True:
         if managelist.search(stunum) == False:
             print("未找到该学生！")
         else:
-            stu = managelist.search(stunum)
-            searchtable = PrettyTable()
-            searchtable.field_names = ["学号", "姓名", "性别", "宿舍", "电话号码"]
-            searchtable.add_row([stu.stunum, stu.name, stu.sex, stu.dorm, stu.phonenum])
-            print("查询成功！")
-            print(searchtable)
+            managelist.delete(stunum)
+            print("删除成功！")
         print("\n\n------------------------------------------")
 
-    # 功能4：退出程序
+    # 功能5：退出程序
     elif opnum == 5:
         print("程序退出")
         break
