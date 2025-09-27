@@ -89,7 +89,7 @@ df["price_scaled"] = scaler.fit_transform(df[["SalePrice"]])
 print("标准化后的 price 前几项：")
 print(df["price_scaled"].head())
 
-# 方法一：等宽分桶（Equal-width binning）
+# 等宽分桶（Equal-width binning）
 bins = [0, 150000, 300000, np.inf]
 labels = ["低价（0-150K）", "中价（150K-300K）", "高价（300K以上）"]
 df["price_level"] = pd.cut(df["SalePrice"], bins=bins, labels=labels)
