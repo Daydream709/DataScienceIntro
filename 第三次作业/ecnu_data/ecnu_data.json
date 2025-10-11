@@ -1,0 +1,359 @@
+{
+  "AGRICULTURAL SCIENCES": [
+    {
+      "citesPerHighPaper": "212.75",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "212.75",
+      "seqNo": "845",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "851",
+      "totalCount": "1381",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "4",
+      "wosDocs": "346",
+      "cites": "6513",
+      "rowSeq": "845",
+      "citesTopPapers": "851",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "18.82369942196531791907514450867052023121",
+      "highPapers": "4"
+    }
+  ],
+  "BIOLOGY & BIOCHEMISTRY": [
+    {
+      "citesPerHighPaper": "211.611111111111111111111111111111111111",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "211.611111111111111111111111111111111111",
+      "seqNo": "721",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "3809",
+      "totalCount": "1649",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "18",
+      "wosDocs": "897",
+      "cites": "20837",
+      "rowSeq": "721",
+      "citesTopPapers": "3809",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "23.22965440356744704570791527313266443701",
+      "highPapers": "18"
+    }
+  ],
+  "CHEMISTRY": [
+    {
+      "citesPerHighPaper": "247.929487179487179487179487179487179487",
+      "citesPerHotPaper": "66",
+      "citesPerTopPaper": "246.375796178343949044585987261146496815",
+      "seqNo": "90",
+      "hotPapers": "9",
+      "citesHotPapers": "594",
+      "citesHighPapers": "38677",
+      "totalCount": "2141",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "157",
+      "wosDocs": "5420",
+      "cites": "164390",
+      "rowSeq": "90",
+      "citesTopPapers": "38681",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "30.3302583025830258302583025830258302583",
+      "highPapers": "156"
+    }
+  ],
+  "CLINICAL MEDICINE": [
+    {
+      "citesPerHighPaper": "212.333333333333333333333333333333333333",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "212.333333333333333333333333333333333333",
+      "seqNo": "2852",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "2548",
+      "totalCount": "6754",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "12",
+      "wosDocs": "940",
+      "cites": "16875",
+      "rowSeq": "2852",
+      "citesTopPapers": "2548",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "17.95212765957446808510638297872340425532",
+      "highPapers": "12"
+    }
+  ],
+  "COMPUTER SCIENCE": [
+    {
+      "citesPerHighPaper": "155.08",
+      "citesPerHotPaper": "159",
+      "citesPerTopPaper": "155.08",
+      "seqNo": "207",
+      "hotPapers": "2",
+      "citesHotPapers": "318",
+      "citesHighPapers": "3877",
+      "totalCount": "863",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "25",
+      "wosDocs": "1803",
+      "cites": "22336",
+      "rowSeq": "207",
+      "citesTopPapers": "3877",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "12.38824181919023849140321686078757626179",
+      "highPapers": "25"
+    }
+  ],
+  "ENGINEERING": [
+    {
+      "citesPerHighPaper": "192.662790697674418604651162790697674419",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "192.662790697674418604651162790697674419",
+      "seqNo": "317",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "16569",
+      "totalCount": "2787",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "86",
+      "wosDocs": "2567",
+      "cites": "55450",
+      "rowSeq": "317",
+      "citesTopPapers": "16569",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "21.60109076743280093494351382937280872614",
+      "highPapers": "86"
+    }
+  ],
+  "ENVIRONMENT_ECOLOGY": [
+    {
+      "citesPerHighPaper": "255.38",
+      "citesPerHotPaper": "18",
+      "citesPerTopPaper": "253.029702970297029702970297029702970297",
+      "seqNo": "130",
+      "hotPapers": "1",
+      "citesHotPapers": "18",
+      "citesHighPapers": "25538",
+      "totalCount": "2066",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "101",
+      "wosDocs": "2941",
+      "cites": "92088",
+      "rowSeq": "130",
+      "citesTopPapers": "25556",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "31.31179870792247534852091125467528051683",
+      "highPapers": "100"
+    }
+  ],
+  "GEOSCIENCES": [
+    {
+      "citesPerHighPaper": "243.526315789473684210526315789473684211",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "243.526315789473684210526315789473684211",
+      "seqNo": "275",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "9254",
+      "totalCount": "1175",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "38",
+      "wosDocs": "1850",
+      "cites": "42158",
+      "rowSeq": "275",
+      "citesTopPapers": "9254",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "22.78810810810810810810810810810810810811",
+      "highPapers": "38"
+    }
+  ],
+  "MATERIALS SCIENCE": [
+    {
+      "citesPerHighPaper": "251.508771929824561403508771929824561404",
+      "citesPerHotPaper": "79.5",
+      "citesPerTopPaper": "251.508771929824561403508771929824561404",
+      "seqNo": "196",
+      "hotPapers": "2",
+      "citesHotPapers": "159",
+      "citesHighPapers": "14336",
+      "totalCount": "1580",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "57",
+      "wosDocs": "2720",
+      "cites": "93969",
+      "rowSeq": "196",
+      "citesTopPapers": "14336",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "34.54742647058823529411764705882352941176",
+      "highPapers": "57"
+    }
+  ],
+  "MATHEMATICS": [
+    {
+      "citesPerHighPaper": "83.72727272727272727272727272727272727273",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "83.72727272727272727272727272727272727273",
+      "seqNo": "115",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "1842",
+      "totalCount": "395",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "22",
+      "wosDocs": "2019",
+      "cites": "11984",
+      "rowSeq": "115",
+      "citesTopPapers": "1842",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "5.93561168895492818226844972758791480931",
+      "highPapers": "22"
+    }
+  ],
+  "MOLECULAR BIOLOGY & GENETICS": [
+    {
+      "citesPerHighPaper": "869.166666666666666666666666666666666667",
+      "citesPerHotPaper": "66",
+      "citesPerTopPaper": "869.166666666666666666666666666666666667",
+      "seqNo": "867",
+      "hotPapers": "1",
+      "citesHotPapers": "66",
+      "citesHighPapers": "5215",
+      "totalCount": "1169",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "6",
+      "wosDocs": "532",
+      "cites": "20568",
+      "rowSeq": "867",
+      "citesTopPapers": "5215",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "38.66165413533834586466165413533834586466",
+      "highPapers": "6"
+    }
+  ],
+  "NEUROSCIENCE & BEHAVIOR": [
+    {
+      "citesPerHighPaper": "111.428571428571428571428571428571428571",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "111.428571428571428571428571428571428571",
+      "seqNo": "853",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "780",
+      "totalCount": "1298",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "7",
+      "wosDocs": "771",
+      "cites": "14295",
+      "rowSeq": "853",
+      "citesTopPapers": "780",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "18.54085603112840466926070038910505836576",
+      "highPapers": "7"
+    }
+  ],
+  "PHARMACOLOGY & TOXICOLOGY": [
+    {
+      "citesPerHighPaper": "244.6",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "244.6",
+      "seqNo": "1064",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "1223",
+      "totalCount": "1389",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "5",
+      "wosDocs": "289",
+      "cites": "5693",
+      "rowSeq": "1064",
+      "citesTopPapers": "1223",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "19.69896193771626297577854671280276816609",
+      "highPapers": "5"
+    }
+  ],
+  "PHYSICS": [
+    {
+      "citesPerHighPaper": "182.319148936170212765957446808510638298",
+      "citesPerHotPaper": "5",
+      "citesPerTopPaper": "182.319148936170212765957446808510638298",
+      "seqNo": "522",
+      "hotPapers": "1",
+      "citesHotPapers": "5",
+      "citesHighPapers": "8569",
+      "totalCount": "995",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "47",
+      "wosDocs": "3495",
+      "cites": "50802",
+      "rowSeq": "522",
+      "citesTopPapers": "8569",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "14.53562231759656652360515021459227467811",
+      "highPapers": "47"
+    }
+  ],
+  "PLANT & ANIMAL SCIENCE": [
+    {
+      "citesPerHighPaper": "126.423076923076923076923076923076923077",
+      "citesPerHotPaper": "0",
+      "citesPerTopPaper": "126.423076923076923076923076923076923077",
+      "seqNo": "395",
+      "hotPapers": "0",
+      "citesHotPapers": "0",
+      "citesHighPapers": "3287",
+      "totalCount": "1950",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "26",
+      "wosDocs": "1375",
+      "cites": "21843",
+      "rowSeq": "395",
+      "citesTopPapers": "3287",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "15.88581818181818181818181818181818181818",
+      "highPapers": "26"
+    }
+  ],
+  "PSYCHIATRY_PSYCHOLOGY": [
+    {
+      "citesPerHighPaper": "90.85714285714285714285714285714285714286",
+      "citesPerHotPaper": "54",
+      "citesPerTopPaper": "90.85714285714285714285714285714285714286",
+      "seqNo": "467",
+      "hotPapers": "1",
+      "citesHotPapers": "54",
+      "citesHighPapers": "636",
+      "totalCount": "1147",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "7",
+      "wosDocs": "1460",
+      "cites": "15243",
+      "rowSeq": "467",
+      "citesTopPapers": "636",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "10.44041095890410958904109589041095890411",
+      "highPapers": "7"
+    }
+  ],
+  "SOCIAL SCIENCES, GENERAL": [
+    {
+      "citesPerHighPaper": "128.372549019607843137254901960784313725",
+      "citesPerHotPaper": "23.66666666666666666666666666666666666667",
+      "citesPerTopPaper": "128.372549019607843137254901960784313725",
+      "seqNo": "314",
+      "hotPapers": "3",
+      "citesHotPapers": "71",
+      "citesHighPapers": "6547",
+      "totalCount": "2407",
+      "institution": "EAST CHINA NORMAL UNIVERSITY",
+      "topPapers": "51",
+      "wosDocs": "2176",
+      "cites": "27524",
+      "rowSeq": "314",
+      "citesTopPapers": "6547",
+      "Country": "CHINA MAINLAND",
+      "citesPerPaper": "12.64889705882352941176470588235294117647",
+      "highPapers": "51"
+    }
+  ]
+}
