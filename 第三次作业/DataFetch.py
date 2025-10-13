@@ -1,34 +1,36 @@
 import requests
 import json
 
-filtervalues=''
-print("1.Agricultural Sciences\n2.Biology & Biochemistry\n3.Chemistry\n4.Clinical Medicine\n5.Computer Science\n6.Economics & Business\n7.Engineering\n8.Environment/Ecology\n9.Geosciences\n10.Immunology\n11.Materials Science\n12.Mathematics\n13.Microbiology\n14.Molecular Biology & Genetics\n15.Multidisciplinary\n16.Neuroscience & Behavior\n17.Pharmacology & Toxicology\n18.Physics\n19.Plant & Animal Science\n20.Psychiatry/Psychology\n21.Social Sciences, General\n22.Space Science")
-researchfields={
-    1:"AGRICULTURAL SCIENCES",
-    2:"BIOLOGY & BIOCHEMISTRY",
-    3:"CHEMISTRY",
-    4:"CLINICAL MEDICINE",
-    5:"COMPUTER SCIENCE",
-    6:"ECONOMICS & BUSINESS",
-    7:"ENGINEERING",
-    8:"ENVIRONMENT/ECOLOGY",
-    9:"GEOSCIENCES",
-    10:"IMMUNOLOGY",
-    11:"MATERIALS SCIENCE",
-    12:"MATHEMATICS",
-    13:"MICROBIOLOGY",
-    14:"MOLECULAR BIOLOGY & GENETICS",
-    15:"MULTIDISCIPLINARY",
-    16:"NEUROSCIENCE & BEHAVIOR",
-    17:"PHARMACOLOGY & TOXICOLOGY",
-    18:"PHYSICS",
-    19:"PLANT & ANIMAL SCIENCE",
-    20:"PSYCHIATRY/PSYCHOLOGY",
-    21:"SOCIAL SCIENCES, GENERAL",
-    22:"SPACE SCIENCE"
+filtervalues = ""
+print(
+    "1.Agricultural Sciences\n2.Biology & Biochemistry\n3.Chemistry\n4.Clinical Medicine\n5.Computer Science\n6.Economics & Business\n7.Engineering\n8.Environment/Ecology\n9.Geosciences\n10.Immunology\n11.Materials Science\n12.Mathematics\n13.Microbiology\n14.Molecular Biology & Genetics\n15.Multidisciplinary\n16.Neuroscience & Behavior\n17.Pharmacology & Toxicology\n18.Physics\n19.Plant & Animal Science\n20.Psychiatry/Psychology\n21.Social Sciences, General\n22.Space Science"
+)
+researchfields = {
+    1: "AGRICULTURAL SCIENCES",
+    2: "BIOLOGY & BIOCHEMISTRY",
+    3: "CHEMISTRY",
+    4: "CLINICAL MEDICINE",
+    5: "COMPUTER SCIENCE",
+    6: "ECONOMICS & BUSINESS",
+    7: "ENGINEERING",
+    8: "ENVIRONMENT/ECOLOGY",
+    9: "GEOSCIENCES",
+    10: "IMMUNOLOGY",
+    11: "MATERIALS SCIENCE",
+    12: "MATHEMATICS",
+    13: "MICROBIOLOGY",
+    14: "MOLECULAR BIOLOGY & GENETICS",
+    15: "MULTIDISCIPLINARY",
+    16: "NEUROSCIENCE & BEHAVIOR",
+    17: "PHARMACOLOGY & TOXICOLOGY",
+    18: "PHYSICS",
+    19: "PLANT & ANIMAL SCIENCE",
+    20: "PSYCHIATRY/PSYCHOLOGY",
+    21: "SOCIAL SCIENCES, GENERAL",
+    22: "SPACE SCIENCE",
 }
 
-choice=int(input("请输入您要查询的排名数："))
+choice = int(input("请输入您要查询的排名数："))
 # 构建URL和参数
 url = "https://esi.clarivate.com/IndicatorsDataAction.action"
 params = {
@@ -127,19 +129,17 @@ cookies = {
 
 
 response = requests.get(url, params=params, headers=headers, cookies=cookies)
-
+# 打印状态码和响应头
 print(response.status_code)
 print(response.headers)
-# print(response.text)  # 打印原始响应内容
 try:
     data = response.json()
     print("解析成功:")
-    # print(json.dumps(data, indent=2, ensure_ascii=False))
     filename = researchfields[choice].replace("/", "_") + ".json"
     # 将数据保存到JSON文件
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print("数据已保存到"+filename+"文件中")
+    print("数据已保存到" + filename + "文件中")
 
 except json.JSONDecodeError as e:
     print("解析失败:", e)
