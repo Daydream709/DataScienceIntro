@@ -191,47 +191,6 @@ def plot_dominant_subjects():
     plt.show()
 
 
-# 7. 综合对比图表：论文数量 vs 平均排名
-def plot_paper_counts_vs_ranking():
-    # 选择一个学科（例如计算机科学）来展示论文数量与排名的关系
-    subject_data = paper_counts_df[paper_counts_df["学科"] == "COMPUTER SCIENCE"]
-    ranking_data = average_ranking_df[average_ranking_df["学科"] == "COMPUTER SCIENCE"]
-
-    # 合并数据
-    merged_data = pd.merge(subject_data, ranking_data, on="区域", how="inner")
-
-    fig, ax = plt.subplots(figsize=(12, 8))
-
-    # 创建散点图
-    scatter = ax.scatter(
-        merged_data["总论文数"] / 1000,
-        merged_data["截尾平均排名"],
-        s=merged_data["入榜机构数"] * 10,
-        alpha=0.7,
-        c=range(len(merged_data)),
-        cmap="viridis",
-    )
-
-    ax.set_xlabel("论文数量 (千篇)", fontsize=14)
-    ax.set_ylabel("平均排名", fontsize=14)
-    ax.set_title("计算机科学领域：论文数量 vs 平均排名\n(点的大小表示机构数量)", fontsize=16)
-
-    # 添加区域标签
-    for i, row in merged_data.iterrows():
-        ax.annotate(
-            row["区域"],
-            (row["总论文数"] / 1000, row["截尾平均排名"]),
-            xytext=(5, 5),
-            textcoords="offset points",
-            fontsize=10,
-        )
-
-    plt.colorbar(scatter, label="区域")
-    plt.tight_layout()
-    plt.savefig("WorldDataEvaluatePicture/计算机科学领域论文数量vs平均排名.png", dpi=300, bbox_inches="tight")
-    plt.show()
-
-
 # 运行所有图表函数
 if __name__ == "__main__":
     plot_paper_counts()
@@ -239,5 +198,4 @@ if __name__ == "__main__":
     plot_average_ranking()
     plot_citation_impact()
     plot_dominant_subjects()
-    plot_paper_counts_vs_ranking()
     print("所有图表已生成并保存到 'WorldDataEvaluatePicture' 文件夹中")
