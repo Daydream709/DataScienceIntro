@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 import joblib
-from sklearn.model_selection import train_test_split, KFold
-from sklearn.preprocessing import StandardScaler, RobustScaler
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import RobustScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import tensorflow as tf
 from tensorflow import keras
@@ -17,6 +17,46 @@ from matplotlib import rcParams
 # 设置中文字体支持
 rcParams["font.sans-serif"] = ["SimHei"]
 rcParams["axes.unicode_minus"] = False
+
+# 检查并配置GPU使用
+print("TensorFlow版本:", tf.__version__)
+print("可用的物理设备:")
+physical_devices = tf.config.list_physical_devices()
+for i, device in enumerate(physical_devices):
+    print(f"  [{i}] {device}")
+
+# 配置GPU使用策略
+gpus = tf.config.list_physical_devices("GPU")
+if gpus:
+    try:
+        # 列出所有GPU设备供用户选择
+        print("\n检测到以下GPU设备:")
+        for i, gpu in enumerate(gpus):
+            print(f"  [{i}] {gpu}")
+
+        # 默认选择第一个独立显卡（通常索引为1，0是集显）
+        selected_gpu_index = None
+        if len(gpus) > 1:
+            # 如果有多个GPU，优先选择第二个（通常是独显）
+            selected_gpu_index = 1
+            print(f"\n默认选择独显进行训练: {gpus[selected_gpu_index]}")
+        else:
+            # 只有一个GPU，选择它
+            selected_gpu_index = 0
+            print(f"\n选择唯一的GPU进行训练: {gpus[selected_gpu_index]}")
+
+        # 设置选定GPU的内存增长
+        tf.config.experimental.set_memory_growth(gpus[selected_gpu_index], True)
+
+        # 限制TensorFlow只使用选定的GPU
+        tf.config.set_visible_devices(gpus[selected_gpu_index], "GPU")
+
+        print("已配置使用指定GPU进行训练")
+
+    except RuntimeError as e:
+        print(f"GPU配置出错: {e}")
+else:
+    print("未检测到GPU设备，将使用CPU进行训练")
 
 # 创建模型结果保存目录
 if not os.path.exists("first_model_results"):
@@ -76,13 +116,6 @@ def load_and_preprocess_data(subject_name):
     # 删除空值
     df = df.dropna()
 
-    # 检查数据质量
-    print(f"数据质量检查 - {subject_name}:")
-    print(f"  数据量: {len(df)}")
-    print(f"  排名范围: {df['Rank'].min()} - {df['Rank'].max()}")
-    print(f"  文章数范围: {df['Documents'].min()} - {df['Documents'].max()}")
-    print(f"  引用次数范围: {df['Cites'].min()} - {df['Cites'].max()}")
-
     return df
 
 
@@ -101,61 +134,9 @@ def create_extended_features(df):
     return df
 
 
-def create_optimized_model(input_dim):
+def create_small_dataset_model(input_dim):
     """
-    创建优化的深度学习模型
-    """
-    model = keras.Sequential(
-        [
-            layers.Dense(
-                128, activation="relu", input_shape=(input_dim,), kernel_regularizer=regularizers.l2(0.001)
-            ),
-            layers.BatchNormalization(),
-            layers.Dropout(0.3),
-            layers.Dense(64, activation="relu", kernel_regularizer=regularizers.l2(0.001)),
-            layers.BatchNormalization(),
-            layers.Dropout(0.3),
-            layers.Dense(32, activation="relu", kernel_regularizer=regularizers.l2(0.001)),
-            layers.BatchNormalization(),
-            layers.Dropout(0.2),
-            layers.Dense(16, activation="relu", kernel_regularizer=regularizers.l2(0.001)),
-            layers.Dropout(0.2),
-            layers.Dense(1),
-        ]
-    )
-
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse", metrics=["mae"])
-
-    return model
-
-
-def create_simple_model(input_dim):
-    """
-    创建简化版深度学习模型（适用于小数据集）
-    """
-    model = keras.Sequential(
-        [
-            layers.Dense(
-                64, activation="relu", input_shape=(input_dim,), kernel_regularizer=regularizers.l2(0.001)
-            ),
-            layers.BatchNormalization(),
-            layers.Dropout(0.2),
-            layers.Dense(32, activation="relu", kernel_regularizer=regularizers.l2(0.001)),
-            layers.BatchNormalization(),
-            layers.Dropout(0.2),
-            layers.Dense(1),
-        ]
-    )
-
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse", metrics=["mae"])
-
-    return model
-
-
-# 新增一个更适合小数据集的模型
-def create_tiny_model(input_dim):
-    """
-    创建极简版深度学习模型（适用于极小数据集）
+    创建专为小数据集设计的深度学习模型
     """
     model = keras.Sequential(
         [
@@ -166,19 +147,22 @@ def create_tiny_model(input_dim):
                 kernel_regularizer=regularizers.l1_l2(l1=0.01, l2=0.01),
             ),
             layers.BatchNormalization(),
-            layers.Dropout(0.3),
+            layers.Dropout(0.4),
             layers.Dense(16, activation="relu", kernel_regularizer=regularizers.l1_l2(l1=0.005, l2=0.005)),
+            layers.BatchNormalization(),
+            layers.Dropout(0.3),
+            layers.Dense(8, activation="relu"),
             layers.Dropout(0.2),
             layers.Dense(1),
         ]
     )
 
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.0005), loss="mse", metrics=["mae"])
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse", metrics=["mae"])
 
     return model
 
 
-def noise_augmentation(X, y, noise_factor=0.05, n_copies=3):
+def noise_augmentation(X, y, noise_factor=0.05, n_copies=2):
     """
     添加噪声进行数据增强（适用于小数据集）
     """
@@ -196,93 +180,9 @@ def noise_augmentation(X, y, noise_factor=0.05, n_copies=3):
     return augmented_X, augmented_y
 
 
-def bagging_ensemble(X_train, y_train, X_val, y_val, X_test, y_test, n_models=5):
-    """
-    实现Bagging集成方法提升小样本数据集性能
-    """
-    models = []
-    val_predictions = []
-    test_predictions = []
-
-    for i in range(n_models):
-        # 创建子模型
-        model = create_tiny_model(X_train.shape[1])
-        models.append(model)
-
-        # Bootstrap采样
-        indices = np.random.choice(len(X_train), size=len(X_train), replace=True)
-        X_bootstrap = X_train[indices]
-        y_bootstrap = y_train[indices]
-
-        # 训练子模型
-        model.fit(
-            X_bootstrap,
-            y_bootstrap,
-            validation_data=(X_val, y_val),
-            epochs=100,
-            batch_size=8,
-            verbose=0,
-            callbacks=[
-                keras.callbacks.EarlyStopping(monitor="val_loss", patience=15, restore_best_weights=True),
-                keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=10, min_lr=0.0001),
-            ],
-        )
-
-        # 收集验证集和测试集预测结果
-        val_pred = model.predict(X_val, verbose=0).flatten()
-        test_pred = model.predict(X_test, verbose=0).flatten()
-        val_predictions.append(val_pred)
-        test_predictions.append(test_pred)
-
-    # 平均所有模型的预测结果
-    ensemble_val_pred = np.mean(val_predictions, axis=0)
-    ensemble_test_pred = np.mean(test_predictions, axis=0)
-
-    # 计算集成模型性能
-    val_mse = mean_squared_error(y_val, ensemble_val_pred)
-    test_mse = mean_squared_error(y_test, ensemble_test_pred)
-
-    print(f"集成模型验证集MSE: {val_mse:.2f}")
-    print(f"集成模型测试集MSE: {test_mse:.2f}")
-
-    return ensemble_test_pred, models
-
-
-def cross_validation_training(X, y, subject_name, n_splits=5):
-    """
-    使用K折交叉验证评估模型性能
-    """
-    kfold = KFold(n_splits=min(n_splits, len(X) // 5), shuffle=True, random_state=42)
-    fold_scores = []
-
-    for fold, (train_idx, val_idx) in enumerate(kfold.split(X)):
-        X_train_fold, X_val_fold = X[train_idx], X[val_idx]
-        y_train_fold, y_val_fold = y[train_idx], y[val_idx]
-
-        # 创建并训练模型
-        model = create_simple_model(X_train_fold.shape[1])
-
-        # 训练模型
-        model.fit(
-            X_train_fold,
-            y_train_fold,
-            validation_data=(X_val_fold, y_val_fold),
-            epochs=50,
-            verbose=0,
-            batch_size=16,
-        )
-
-        # 评估
-        y_pred = model.predict(X_val_fold, verbose=0).flatten()
-        mse = mean_squared_error(y_val_fold, y_pred)
-        fold_scores.append(mse)
-
-    return np.mean(fold_scores)
-
-
 def create_ranking_model(subject_name):
     """
-    为指定学科创建基于深度学习的排名预测模型
+    为指定学科创建基于深度学习的排名预测模型（专为小数据集优化）
     """
     print(f"\n正在处理学科: {subject_name}")
 
@@ -302,19 +202,24 @@ def create_ranking_model(subject_name):
     extended_features = ["CitesPerDocument", "TopPapersRatio", "LogDocuments", "LogCites", "LogTopPapers"]
     all_features = base_features + extended_features
 
-    X = df_extended[all_features]
-    y = df_extended["Rank"]
+    # 准备特征和标签
+    X = df_extended[all_features].values
+    y = df_extended["Rank"].values
 
-    # 打乱数据并分割成训练集(70%)、验证集(15%)和测试集(15%)
-    df_shuffled = df_extended.sample(frac=1, random_state=42).reset_index(drop=True)
-    X_shuffled = df_shuffled[all_features]
-    y_shuffled = df_shuffled["Rank"]
+    # 打乱数据
+    indices = np.arange(len(X))
+    np.random.seed(42)
+    np.random.shuffle(indices)
+    X = X[indices]
+    y = y[indices]
 
-    # 分割数据
-    X_temp, X_test, y_temp, y_test = train_test_split(X_shuffled, y_shuffled, test_size=0.15, random_state=42)
-    X_train, X_val, y_train, y_val = train_test_split(
-        X_temp, y_temp, test_size=0.15 / 0.85, random_state=42  # 约0.15/(1-0.15)
-    )
+    # 对于小数据集，使用更简单的划分比例：60%训练，20%验证，20%测试
+    split_point_1 = int(0.6 * len(X))
+    split_point_2 = int(0.8 * len(X))
+
+    X_train, y_train = X[:split_point_1], y[:split_point_1]
+    X_val, y_val = X[split_point_1:split_point_2], y[split_point_1:split_point_2]
+    X_test, y_test = X[split_point_2:], y[split_point_2:]
 
     print(f"训练集大小: {len(X_train)}, 验证集大小: {len(X_val)}, 测试集大小: {len(X_test)}")
 
@@ -327,62 +232,47 @@ def create_ranking_model(subject_name):
     # 保存标准化器，以便将来使用模型时进行相同的标准化
     joblib.dump(scaler, f"first_saved_models/{subject_name}_scaler.pkl")
 
-    # 对于非常小的数据集，添加噪声增强
-    if len(X_train) < 30:
-        print("数据量较小，执行数据增强...")
-        X_train_scaled, y_train = noise_augmentation(
-            X_train_scaled, y_train.values, noise_factor=0.03, n_copies=2
-        )
-        print(f"数据增强后训练集大小: {len(X_train_scaled)}")
+    # 数据增强对于小数据集非常重要
+    print("执行数据增强...")
+    X_train_scaled, y_train = noise_augmentation(X_train_scaled, y_train, noise_factor=0.03, n_copies=3)
+    print(f"数据增强后训练集大小: {len(X_train_scaled)}")
 
-    # 根据数据量选择模型复杂度
-    if len(X_train) > 50:
-        model = create_optimized_model(X_train_scaled.shape[1])
-        epochs = 100
-        batch_size = 32
-    elif len(X_train) > 20:
-        model = create_simple_model(X_train_scaled.shape[1])
-        epochs = 80
-        batch_size = 16
-    else:
-        model = create_tiny_model(X_train_scaled.shape[1])
-        epochs = 100
-        batch_size = 8
+    # 创建专为小数据集设计的模型
+    model = create_small_dataset_model(X_train_scaled.shape[1])
 
     # 显示模型结构
     print("模型结构:")
     model.summary()
 
-    # 训练模型
-    early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=20, restore_best_weights=True)
+    # 训练模型 - 针对小数据集调整参数
+    early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=25, restore_best_weights=True)
+    reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=10, min_lr=0.0001)
 
-    reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.2, patience=10, min_lr=0.0001)
+    # 显示当前使用的设备
+    print("正在使用的设备:")
+    logical_devices = tf.config.list_logical_devices()
+    for device in logical_devices:
+        print(f"  {device}")
 
-    history = model.fit(
-        X_train_scaled,
-        y_train,
-        validation_data=(X_val_scaled, y_val),
-        epochs=epochs,
-        batch_size=batch_size,
-        callbacks=[early_stopping, reduce_lr],
-        verbose=1,
-    )
+    # 确保在指定GPU上进行训练
+    with tf.device("/GPU:0"):  # 在我们设置的可见GPU上训练
+        history = model.fit(
+            X_train_scaled,
+            y_train,
+            validation_data=(X_val_scaled, y_val),
+            epochs=150,  # 增加训练轮数，配合早停机制
+            batch_size=min(16, len(X_train_scaled) // 4),  # 动态调整批次大小
+            callbacks=[early_stopping, reduce_lr],
+            verbose=1,
+        )
 
     # 保存模型
     model.save(f"first_saved_models/{subject_name}_dl_model.h5")
     print(f"模型已保存至: first_saved_models/{subject_name}_dl_model.h5")
 
     # 在测试集上评估最终模型
-    y_test_pred = model.predict(X_test_scaled, verbose=0).flatten()
-
-    # 对于很小的数据集，尝试集成学习方法
-    if len(X_train) < 25 and len(X_test) > 0:
-        print("使用集成学习方法提升性能...")
-        ensemble_pred, ensemble_models = bagging_ensemble(
-            X_train_scaled, y_train, X_val_scaled, y_val, X_test_scaled, y_test, n_models=5
-        )
-        # 使用集成模型的结果作为最终预测
-        y_test_pred = ensemble_pred
+    with tf.device("/GPU:0"):
+        y_test_pred = model.predict(X_test_scaled, verbose=0).flatten()
 
     # 计算测试集评估指标
     test_mse = mean_squared_error(y_test, y_test_pred)
@@ -394,15 +284,6 @@ def create_ranking_model(subject_name):
     print(f"测试集 MAE: {test_mae:.2f}")
     print(f"测试集 MAPE: {test_mape:.2f}%")
     print(f"测试集 R2: {test_r2:.4f}")
-
-    # 分析预测结果
-    pred_mean = np.mean(y_test_pred)
-    pred_std = np.std(y_test_pred)
-    actual_mean = np.mean(y_test)
-    actual_std = np.std(y_test)
-
-    print(f"预测值统计: 均值={pred_mean:.2f}, 标准差={pred_std:.2f}")
-    print(f"实际值统计: 均值={actual_mean:.2f}, 标准差={actual_std:.2f}")
 
     # 可视化训练过程
     plt.figure(figsize=(12, 4))
