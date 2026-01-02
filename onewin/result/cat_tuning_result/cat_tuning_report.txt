@@ -1,0 +1,41 @@
+========================================
+      CatBoost 自动调参实验报告
+========================================
+完成时间: 2026-01-02 18:37:05
+
+🏆 [最佳超参数配置]
+ - learning_rate       : 0.013739686312696456
+ - depth               : 7
+ - l2_leaf_reg         : 15.154455339348663
+ - random_strength     : 4.430349328123086
+ - bagging_temperature : 0.9138795215061737
+ - min_data_in_leaf    : 46
+ - scale_pos_weight    : 9.300221812041485
+
+📈 [核心表现指标]
+ - AUC (排序能力)   : 0.831947
+ - LogLoss (确定性) : 0.425966
+ - Max F1 Score    : 0.367420
+ - Best Threshold  : 0.6477
+
+📊 [特征重要性 TOP 20]
+  1. pop_rank                 : 18.4349
+  2. pop_vs_mean              : 16.8137
+  3. popularity               : 6.7288
+  4. history_avg_rank         : 5.5153
+  5. horse_weight_cleaned     : 5.5119
+  6. weight_vs_mean           : 4.4963
+  7. top3_rate_vs_race_avg    : 4.3719
+  8. history_race_count       : 4.0670
+  9. racing_age               : 4.0034
+ 10. win_rate_vs_race_avg     : 3.6744
+ 11. weight_per_dist          : 3.3612
+ 12. gate_no                  : 3.1206
+ 13. history_win_rate         : 2.5851
+ 14. history_top3_rate        : 2.2988
+ 15. jockey_weight            : 2.0895
+ 16. history_top3_count       : 1.8636
+ 17. history_win_count        : 1.6122
+ 18. venue_type_ダ             : 0.9310
+ 19. direction_右              : 0.9180
+ 20. venue_type_芝             : 0.8991

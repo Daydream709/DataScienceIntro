@@ -1,0 +1,5 @@
+=== XGBoost 统一评估报告 ===
+AUC: 0.852839
+LogLoss: 0.487155
+Max F1: 0.593279
+Best Thresh: 0.6171

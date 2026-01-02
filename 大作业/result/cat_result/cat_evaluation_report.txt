@@ -1,0 +1,5 @@
+=== CatBoost 统一评估报告 ===
+AUC: 0.853137
+LogLoss: 0.487760
+Max F1: 0.594147
+Best Thresh: 0.6372

@@ -1,0 +1,18 @@
+=== Stacking Meta-Learning Report ===
+生成时间: 2026-01-02 16:36:06
+
+1. Meta-Model Coefficients (模型话语权):
+ - LightGBM  : -1.2450
+ - XGBoost   : 6.4507
+ - CatBoost  : -2.4895
+ - TabNet    : 3.3073
+
+2. Intercept (偏置项): -3.7883
+
+3. Detailed Metrics Comparison:
+         Model      AUC  LogLoss  BrierScore   Max_F1
+       XGBoost 0.853252 0.498866    0.171133 0.593840
+      CatBoost 0.853240 0.455169    0.153557 0.594058
+      LightGBM 0.853057 0.456747    0.154493 0.593850
+Stacking_Final 0.853054 0.371262    0.118170 0.593480
+        TabNet 0.852442 0.366005    0.117681 0.593487
