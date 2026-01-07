@@ -1,6 +1,0 @@
-LightGBM 调参报告
-====================
-AUC: 0.828256 | LogLoss: 0.489453 | F1: 0.362551
-Best Threshold: 0.7122
-
-Best Params: {'learning_rate': 0.04827477668450872, 'num_leaves': 84, 'max_depth': 5, 'min_child_samples': 125, 'feature_fraction': 0.8965076144117149, 'bagging_fraction': 0.7870840759113749, 'bagging_freq': 7, 'scale_pos_weight': 12.504251038301735}

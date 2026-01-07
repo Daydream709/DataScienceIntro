@@ -1,0 +1,19 @@
+=== Top 3 Stacking Meta-Learning Report ===
+生成时间: 2026-01-07 17:21:12
+
+1. 模型权力分配 (Meta-Model Coefficients):
+注：正数代表该模型对最终预测有正向贡献
+ - LightGBM  : 1.2531
+ - XGBoost   : 1.3937
+ - CatBoost  : 1.3605
+ - TabNet    : 1.0700
+
+2. 截距 (Intercept): -3.7064
+
+3. 性能对比排行榜:
+         Model      AUC  LogLoss  BrierScore   Max_F1
+      CatBoost 0.814937 0.485584    0.161617 0.555927
+       XGBoost 0.814892 0.467971    0.154515 0.557099
+Stacking_Final 0.814691 0.412087    0.132181 0.556605
+      LightGBM 0.811574 0.561226    0.192254 0.553304
+        TabNet 0.811262 0.537075    0.181697 0.556502
