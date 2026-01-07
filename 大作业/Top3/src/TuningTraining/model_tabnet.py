@@ -65,7 +65,7 @@ def generate_assets(y_test, y_prob, model, feature_names):
         f.write(f"AUC: {auc:.6f} | LogLoss: {loss:.6f}\n")
         f.write(f"Max F1: {max_f1:.6f} | Best Thresh: {best_th:.4f}\n")
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 7))
 
     # ROC Curve
     fpr, tpr, _ = roc_curve(y_test, y_prob)
@@ -73,6 +73,7 @@ def generate_assets(y_test, y_prob, model, feature_names):
     ax1.plot([0, 1], [0, 1], "k--", alpha=0.3)
     ax1.set_title("ROC Curve")
     ax1.legend()
+    ax1.grid(True, alpha=0.3)
 
     # PR Curve
     ax2.plot(rec, prec, color="purple", lw=3, label=f"Top 3 PR Curve")
@@ -80,18 +81,19 @@ def generate_assets(y_test, y_prob, model, feature_names):
     ax2.set_ylabel("Precision")
     ax2.set_title("Precision-Recall Curve")
     ax2.legend()
-    plt.savefig(Config.PLOT_PNG, dpi=300)
-    plt.close()
+    ax2.grid(True, alpha=0.3)
 
     # 特征重要性
     feat_imp = model.feature_importances_
     idx = np.argsort(feat_imp)[-20:]
-    plt.figure(figsize=(10, 8))
-    plt.barh(range(20), feat_imp[idx], align="center", color="#9b59b6")
-    plt.yticks(range(20), [feature_names[i] for i in idx])
-    plt.title("Top 20 Features (TabNet Top 3)")
+    ax3.barh(range(20), feat_imp[idx], align="center", color="#9b59b6")
+    ax3.set_yticks(range(20))
+    ax3.set_yticklabels([feature_names[i] for i in idx], fontsize=9)
+    ax3.set_title("Top 20 Features (TabNet Top 3)")
+    ax3.grid(True, alpha=0.3, axis='x')
+
     plt.tight_layout()
-    plt.savefig(Config.IMPORTANCE_PNG, dpi=300)
+    plt.savefig(Config.PLOT_PNG, dpi=300, bbox_inches='tight')
     plt.close()
 
 # ==========================================

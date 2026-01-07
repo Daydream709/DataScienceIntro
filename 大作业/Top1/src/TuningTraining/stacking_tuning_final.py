@@ -46,8 +46,11 @@ def calculate_metrics(y_true, y_prob, name):
     brier = brier_score_loss(y_true, y_prob)
     prec, rec, thres = precision_recall_curve(y_true, y_prob)
     f1 = 2 * (prec * rec) / (prec + rec + 1e-8)
+    max_f1 = np.max(f1)
+    # 找到最佳F1对应的阈值
+    best_thresh = thres[np.argmax(f1)] if len(thres) > 0 else 0.5
 
-    return {"Model": name, "AUC": auc, "LogLoss": ll, "Brier": brier, "Max_F1": np.max(f1)}
+    return {"Model": name, "AUC": auc, "F1_score": max_f1, "LogLoss": ll, "Best_Threshold": best_thresh, "Brier": brier}
 
 
 # ==========================================
@@ -148,6 +151,11 @@ def main():
         f.write("=" * 45 + "\n")
         f.write(f"生成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         f.write("📊 [模型表现排行榜]\n")
+        f.write(" 模型名称      AUC      | F1 分数  | LogLoss  | Best Threshold\n")
+        f.write("-" * 65 + "\n")
+        for _, row in df_metrics.iterrows():
+            f.write(f" {row['Model']:10}  {row['AUC']:.6f} | {row['F1_score']:.6f} | {row['LogLoss']:.6f} | {row['Best_Threshold']:.4f}\n")
+        f.write("\n\n📋 [模型详细指标]\n")
         f.write(df_metrics.to_string(index=False))
         f.write("\n\n⚖️ [元学习器话语权分配]\n")
         for name, weight in zip(X_meta.columns, meta_model.coef_[0]):

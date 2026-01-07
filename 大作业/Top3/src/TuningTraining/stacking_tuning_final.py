@@ -42,14 +42,18 @@ def calculate_metrics(y_true, y_prob, name):
     auc = roc_auc_score(y_true, y_prob)
     ll = log_loss(y_true, y_prob)
     brier = brier_score_loss(y_true, y_prob)
-    prec, rec, _ = precision_recall_curve(y_true, y_prob)
+    prec, rec, thresholds = precision_recall_curve(y_true, y_prob)
     f1 = 2 * (prec * rec) / (prec + rec + 1e-8)
+    max_f1 = np.max(f1)
+    # 找到最大F1对应的最佳阈值
+    best_threshold = thresholds[np.argmax(f1)] if len(thresholds) > 0 else 0.5
     return {
         "Model": name,
         "AUC": round(auc, 6),
+        "F1_score": round(max_f1, 6),
         "LogLoss": round(ll, 6),
+        "Best_Threshold": round(best_threshold, 6),
         "BrierScore": round(brier, 6),
-        "Max_F1": round(np.max(f1), 6),
     }
 
 # ==========================================
@@ -107,6 +111,11 @@ def run_final_stacking():
             f.write(f" - {name:10}: {weight:.4f}\n")
         f.write(f"\n2. 截距 (Intercept): {meta_model.intercept_[0]:.4f}\n\n")
         f.write("3. 性能对比排行榜:\n")
+        f.write(" 模型名称      AUC      | F1 分数  | LogLoss  | Best Threshold\n")
+        f.write("-" * 65 + "\n")
+        for _, row in df_metrics.iterrows():
+            f.write(f" {row['Model']:10}  {row['AUC']:.6f} | {row['F1_score']:.6f} | {row['LogLoss']:.6f} | {row['Best_Threshold']:.4f}\n")
+        f.write("\n\n4. 详细性能指标:\n")
         f.write(df_metrics.to_string(index=False))
 
     print("\n📊 终极性能对比 (AUC 降序):")

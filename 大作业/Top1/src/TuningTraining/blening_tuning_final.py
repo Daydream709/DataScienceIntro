@@ -3,7 +3,7 @@ import time
 import pandas as pd
 import numpy as np
 import optuna
-from sklearn.metrics import roc_auc_score, log_loss, roc_curve
+from sklearn.metrics import roc_auc_score, log_loss, roc_curve, f1_score, precision_recall_curve
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -61,8 +61,42 @@ def load_data():
 def generate_assets(y_true, preds_dict, best_weights, final_auc):
     # 1. 计算各模型独立 AUC
     individual_aucs = {name: roc_auc_score(y_true, prob) for name, prob in preds_dict.items()}
-
-    # 2. 生成相关性热图
+    
+    # 2. 计算融合后的概率
+    blended_prob = sum(preds_dict[name] * best_weights[name] for name in preds_dict.keys())
+    
+    # 3. 计算融合后的LogLoss
+    blended_logloss = log_loss(y_true, blended_prob)
+    
+    # 4. 计算最佳阈值和对应的F1分数
+    # 使用精确率-召回率曲线找到最佳阈值
+    precision, recall, thresholds = precision_recall_curve(y_true, blended_prob)
+    f1_scores = 2 * (precision * recall) / (precision + recall)
+    f1_scores = f1_scores[:-1]  # 移除最后一个NaN值
+    best_threshold = thresholds[np.argmax(f1_scores)]
+    best_f1 = np.max(f1_scores)
+    
+    # 5. 计算各单一模型的F1分数和LogLoss
+    individual_metrics = {}
+    for name, prob in preds_dict.items():
+        # 计算各模型的LogLoss
+        model_logloss = log_loss(y_true, prob)
+        
+        # 计算各模型的最佳F1分数和对应的阈值
+        precision_i, recall_i, thresholds_i = precision_recall_curve(y_true, prob)
+        f1_scores_i = 2 * (precision_i * recall_i) / (precision_i + recall_i)
+        f1_scores_i = f1_scores_i[:-1]  # 移除最后一个NaN值
+        best_threshold_i = thresholds_i[np.argmax(f1_scores_i)] if len(f1_scores_i) > 0 else 0.5
+        best_f1_i = np.max(f1_scores_i) if len(f1_scores_i) > 0 else 0
+        
+        individual_metrics[name] = {
+            'auc': individual_aucs[name],
+            'logloss': model_logloss,
+            'f1': best_f1_i,
+            'threshold': best_threshold_i
+        }
+    
+    # 6. 生成相关性热图
     # 融合原则：模型间的相关性越低，融合收益越高
     df_corr = pd.DataFrame(preds_dict).corr()
     plt.figure(figsize=(10, 8))
@@ -71,23 +105,27 @@ def generate_assets(y_true, preds_dict, best_weights, final_auc):
     plt.savefig(Config.CORR_PNG, dpi=300)
     plt.close()
 
-    # 3. 写入实验报告
+    # 7. 写入实验报告
     with open(Config.REPORT_TXT, "w", encoding="utf-8") as f:
         f.write("=" * 45 + "\n")
         f.write("      赛马预测全模型融合(Blending)报告\n")
         f.write("=" * 45 + "\n")
         f.write(f"完成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
-        f.write("📈 [单一模型表现对比 (AUC)]\n")
-        for name, score in individual_aucs.items():
-            f.write(f" - {name:10}: {score:.6f}\n")
+        f.write("📈 [单一模型表现对比]\n")
+        f.write(" 模型名称      AUC      | F1 分数  | LogLoss  | Best Threshold\n")
+        f.write("-" * 65 + "\n")
+        for name, metrics in individual_metrics.items():
+            f.write(f" {name:10}  {metrics['auc']:.6f} | {metrics['f1']:.6f} | {metrics['logloss']:.6f} | {metrics['threshold']:.4f}\n")
 
         f.write(f"\n🚀 [融合后表现]\n")
-        f.write(f" - Final Blended AUC: {final_auc:.6f}\n")
+        f.write(f" 模型名称      AUC      | F1 分数  | LogLoss  | Best Threshold\n")
+        f.write("-" * 65 + "\n")
+        f.write(f" Blending  {final_auc:.6f} | {best_f1:.6f} | {blended_logloss:.6f} | {best_threshold:.4f}\n")
         improvement = final_auc - max(individual_aucs.values())
-        f.write(f" - 相比最强单模型提升: {improvement:.6f}\n\n")
+        f.write(f"\n - 相比最强单模型AUC提升: {improvement:.6f}\n")
 
-        f.write("⚖️ [最优权重分配]\n")
+        f.write(f"\n⚖️ [最优权重分配]\n")
         for name, w in best_weights.items():
             f.write(f" - {name:10}: {w*100:.2f}%\n")
 
@@ -145,7 +183,7 @@ def main():
     # 4. 生成图表与报告
     generate_assets(y_true, preds_dict, best_weights, study.best_value)
 
-    print(f"\n✨ 融合资产已归档至: {Config.RESULT_DIR}")
+    print(f"\n✨ 融合资产已归档至: {Config.OUTPUT_DIR}")
     print(f"📊 请查看相关性热图: {Config.CORR_PNG}")
 
 

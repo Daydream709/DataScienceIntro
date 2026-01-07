@@ -102,6 +102,11 @@
 
 - 四种模型：LightGBM、XGBoost、CatBoost、tabnet(深度学习)
 - 两种结合：blending、stacking
-- 最优模型、最差模型
-- 为什么最优模型、最差模型
-- blending、stacking 的表现差异
+- optuna 调参
+
+### 结果分析
+
+- 模型评估指标：AUC、准确率、F1 分数
+- 对比分析：四种模型、blending、stacking 之间的性能差异
+- 最优模型选择：根据评估指标选择最优模型
+- 模型解释性：分析最优模型的特征重要性，理解模型决策过程
